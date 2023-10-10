@@ -1,3 +1,5 @@
+#1. 인스타그램 좋아요 자동화
+"""
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -35,7 +37,9 @@ for i in range(10):
     except:
         # 다음 버튼 클릭하기
         driver.find_element(By.CSS_SELECTOR, '._aaqg ._abl-').click()
+"""
 
+#2.SRT 가장 빠른 예매
 """
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -115,4 +119,78 @@ while True:
         time.sleep(1)
     else:
         break
+"""
+
+#3. 11번가 상품 구매 및 취소 자동화
+"""
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.select import Select
+import time
+
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+driver.get('https://www.lotteimall.com/')
+time.sleep(1)
+
+# 로그인
+driver.find_element(By.CLASS_NAME, 'btn_menu').click()
+driver.find_element(By.ID, 'login_id').send_keys('l1c2h3@gmail.com') # 아이디
+driver.find_element(By.ID, 'password').send_keys("@2dlckdgus") # 비밀번호
+driver.find_element(By.XPATH, '//*[@id="member_cont"]/div/div[1]/div/a').click() # 로그인 버튼 클릭
+time.sleep(2)
+
+#팝업 닫기
+tabs = driver.window_handles
+driver.switch_to.window(tabs[1])
+driver.close()
+
+#포커스 이동
+tabs = driver.window_handles
+driver.switch_to.window(tabs[0])
+
+time.sleep(2)
+driver.find_element(By.ID, 'menu_1depth_maintvschedulelotte').click() # 편성표
+time.sleep(2)
+driver.find_element(By.XPATH, '//*[@id="schedule_wrap"]/div[2]/div[2]/div[1]/div[3]/div[1]/div[2]/button').click() # 현재 상품 바로구매
+time.sleep(2)
+driver.find_element(By.XPATH, '//*[@id="contents"]/div[2]/div[1]/div[1]/div[2]/div[7]').click() # 옵션리스트 펼침
+time.sleep(1)
+driver.find_element(By.XPATH, '//*[@id="optLaySel_0"]/div/ul/div/label/span').click() # 품절 제외
+time.sleep(1)
+driver.find_element(By.XPATH, '//*[@id="0_2"]/a/p').click() # 옵션 1번 선택
+time.sleep(1)
+driver.find_element(By.ID, 'immOrder-btn').click() # 결제하기
+time.sleep(1)
+driver.find_element(By.ID, 'vBank').click() # 무통장입금 선택
+time.sleep(1)
+select = Select(driver.find_element(By.ID, 'vir_acct_bank'))
+select.select_by_visible_text('우리은행')
+time.sleep(1)
+driver.find_element(By.ID, 'cr_issu_type_0').click() # 현금영수증 미발행
+time.sleep(1)
+driver.find_element(By.XPATH, '//*[@id="normalPayment"]/a/img').click() # 결제하기
+time.sleep(1)
+
+#alert 확인
+alert = driver.switch_to.alert
+alert.accept()
+time.sleep(1)
+alert.accept()
+time.sleep(1)
+
+driver.find_element(By.XPATH, '//*[@id="order_agree2"]/div[1]/div[1]/div[2]/p/a/img').click() # 상세내역
+time.sleep(1)
+driver.find_element(By.ID, 'ga_주문취소').click() # 주문취소
+time.sleep(1)
+
+tabs = driver.window_handles
+driver.switch_to.window(tabs[1]) #팝업으로 포커스
+
+driver.find_element(By.XPATH, '//*[@id="payForm"]/fieldset/div[1]/div/div/label').click() # 취소 동의
+time.sleep(1)
+driver.find_element(By.XPATH, '//*[@id="ord_cancel_proc"]').click() # 취소
+print("구매&취소 완료")
+time.sleep(1)
 """
